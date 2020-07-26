@@ -1,19 +1,54 @@
+.fmodal {}
+
+.fmodal.open .modal-overlay,
+.fmodal.open .modal-window {
+    opacity: 1;
+    z-index: 1000;
+}
+.fmodal.hide .modal-overlay,
+.fmodal.hide .modal-window {
+    opacity: 1;
+    z-index: 1000;
+}
+.fmodal.open .modal-window {
+    transform: translateY(100px);
+}
+
+.fmodal.open .modal-overlay {
+    background: rgba(0, 0, 0, .5);
+}
+
+.fmodal.hide .modal-window {
+    transform: translateY(-200px);
+}
+
+.fmodal.hide .modal-overlay {
+    background: rgba(0, 0, 0, 0);
+}
+
+.modal-window, .modal-overlay {
+    opacity: 0;
+    z-index: -1;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0);
+  transition: background .2s ease-in;
 }
 
 .modal-window {
   width: 600px;
   border-radius: 5px;
   background: #fff;
-  margin: 100px auto;
+  margin: 0 auto;
+  transform: translateY(-200px);
+  transition: transform .2s ease-in;
 }
-
 .modal-header {
   padding: 5px 10px;
   display: flex;
