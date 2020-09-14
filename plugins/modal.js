@@ -1,22 +1,23 @@
 function _createModal(options) {
+  const DEFAULT_WIDTH = "600px";
   const modal = document.createElement("div");
   modal.classList.add("fmodal");
-  modal.insertAdjacentHTML("afterbegin",
+  modal.insertAdjacentHTML(
+    "afterbegin",
     `
-  <div class="modal-overlay">
-    <div class="modal-window">
+  <div class="modal-overlay" data-close='true'>
+    <div class="modal-window" style="width: ${options.width || DEFAULT_WIDTH}">
       <div class="modal-header">
-        <span class="modal-title">Modal title</span>
-        <span class="modal-close">&times;</span>
+        <span class="modal-title">${options.title || "window"}</span>
+        ${options.closable ? `<span class="modal-close" data-close='true'>&times;</span>` : ''}
       </div>
       <div class="modal-body">
-          <p>lorem ipsum dolor sit</p>
-          <p>lorem ipsum dolor sit</p>
+          ${options.content || ''}
       </div>
 
       <div class="modal-footer">
           <button>Ok</button>
-          <button>Cencel</button>
+          <button>Cancel</button>
       </div>
     </div>
   </div>
@@ -26,23 +27,32 @@ function _createModal(options) {
   return modal;
 }
 
-$.modal = function(options) {
-  const ANIMATION_SPEED = 200
+$.modal = function (options) {
+  const ANIMATION_SPEED = 200;
   const $modal = _createModal(options);
-  let closing = false
-  return {
+  let closing = false;
+
+  const modal = {
     open() {
       !closing && $modal.classList.add("open");
     },
     close() {
-      closing = true 
+      closing = true;
       $modal.classList.remove("open");
       $modal.classList.add("hide");
-      setTimeout( () => {
+      setTimeout(() => {
         $modal.classList.remove("hide");
-        closing = false  
-      }, ANIMATION_SPEED)
+        closing = false;
+      }, ANIMATION_SPEED);
     },
-    destroy() {},
-  };
+  }
+
+  $modal.addEventListener('click', event => {
+    console.log('Clicked', event.target.dataset.close)
+    if (event.target.dataset.close) {
+      modal.close()
+    }
+  })
+
+  return modal
 };
